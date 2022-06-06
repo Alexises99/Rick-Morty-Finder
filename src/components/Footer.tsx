@@ -10,7 +10,9 @@ const Footer = () => {
       <a target="_blank" href="https://icons8.com" rel="noreferrer">
         Icons8
       </a>
-      <Github className="mt-3 bg-white rounded-full w-12 h-12 mx-auto" />
+      <a href="https://github.com/Alexises99/Rick-Morty-Finder">
+        <Github className="mt-3 bg-white rounded-full w-12 h-12 mx-auto" />
+      </a>
     </footer>
   );
 };
