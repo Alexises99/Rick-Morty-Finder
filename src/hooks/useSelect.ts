@@ -12,8 +12,13 @@ export const useSelect = () => {
     setValue(event.target.value);
   };
 
+  const reset = () => {
+    setValue('');
+  };
+
   return {
     value,
     onChange,
+    reset,
   };
 };

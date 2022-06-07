@@ -18,6 +18,7 @@ const SelectForm = ({ name, labelTag, options, values }: SelectFormProps) => {
         {...values}
         className="w-full py-2 mt-2 bg-white border rounded-md focus:border-primary-green/80 focus:ring-primary-green/50 focus:outline-none focus:ring focus:ring-opacity-40 md:text-lg lg:text-xl"
       >
+        <option value="" disabled hidden>{`Selecciona el ${labelTag}`}</option>
         {options.map((option) => (
           <option key={option} value={option.toLowerCase()}>
             {option}

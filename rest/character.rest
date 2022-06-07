@@ -1,1 +1,1 @@
-GET https://rickandmortyapi.com/api/character/?name=rick
+GET https://rickandmortyapi.com/api/character/?name=rick&status=alive&genre=female

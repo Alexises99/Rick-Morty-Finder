@@ -20,14 +20,14 @@ export interface CharacterType {
 }
 
 export enum Status {
-  Alive = 'alive',
-  Dead = 'dead',
-  Unknown = 'unkown',
+  Alive = 'Alive',
+  Dead = 'Dead',
+  Unknown = 'unknown',
 }
 
 export enum Gender {
-  Female = 'female',
-  Male = 'male',
-  Genderless = 'genderless',
-  Unknown = 'unkown',
+  Female = 'Female',
+  Male = 'Male',
+  Genderless = 'Genderless',
+  Unknown = 'unknown',
 }

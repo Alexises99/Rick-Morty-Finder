@@ -5,30 +5,24 @@ import SelectForm from '../components/SelectForm';
 import { useField } from '../hooks/useField';
 import { useSelect } from '../hooks/useSelect';
 import { CharacterType, Gender, Status } from '../interfaces/character.interface';
-import { ResponseApi } from '../interfaces/response.interface';
+import characterService from '../services/character';
 
 const Search = () => {
   const { reset: resetName, ...name } = useField('text');
-  const { ...genre } = useSelect();
-  const { ...status } = useSelect();
+  const { reset: resetGender, ...genre } = useSelect();
+  const { reset: resetStatus, ...status } = useSelect();
+
+  console.log(genre.value);
 
   const [characters, setCharacters] = useState<Array<CharacterType>>([]);
 
-  const getAllPages = async (url: string): Promise<Array<CharacterType>> => {
-    const response = await fetch(url);
-    const data: ResponseApi = await response.json();
-    const characters = data.results;
-    const { info } = data;
-    const { next } = info;
-    if (next !== null) {
-      characters.push(...(await getAllPages(next)));
-    }
-    return characters;
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    getAllPages('https://rickandmortyapi.com/api/character/?name=rick').then((data) => setCharacters(data));
+    const data = await characterService.getAll(name.value, status.value as Status, genre.value as Gender);
+    setCharacters(data);
+    resetName();
+    resetStatus();
+    resetGender();
   };
 
   return (
