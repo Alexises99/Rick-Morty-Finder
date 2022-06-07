@@ -17,16 +17,19 @@ const Search = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  console.log(status.defaultValue);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     try {
-      const data = await characterService.getAll(name.value, status.value as Status, genre.value as Gender);
+      const data = await characterService.getAll(
+        name.value,
+        status.defaultValue as Status,
+        genre.defaultValue as Gender,
+      );
       setCharacters(data);
-      console.log('hola');
       resetName();
-      resetStatus();
-      resetGender();
       setLoading(false);
     } catch (err) {
       setError('Error cargando personajes');

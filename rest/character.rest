@@ -2,4 +2,4 @@ GET https://rickandmortyapi.com/api/character/?name=rick&status=alive&genre=
 
 
 ###
-GET https://rickandmortyapi.com/api/character/?name=rick&status=alive
+GET https://rickandmortyapi.com/api/character/1

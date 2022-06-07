@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/nav/Navbar';
+import Character from './pages/Character';
 import Home from './pages/Home';
 import Search from './pages/Search';
 
@@ -12,6 +13,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/character">
+            <Route path=":characterId" element={<Character />} />
+          </Route>
         </Routes>
       </div>
 

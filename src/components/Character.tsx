@@ -6,10 +6,10 @@ interface CharacterProps {
 }
 
 const Character = ({ character }: CharacterProps) => {
-  const { name, gender, status, type, created } = character;
+  const { name, gender, status, type, created, id } = character;
   return (
     <div className="bg-white/90 border-primary-green border-2 rounded-lg my-4">
-      <Link to={`/character/:id`} className="flex flex-col p-4">
+      <Link to={`/character/${id}`} className="flex flex-col p-4">
         <h3 className="mt-3">
           <span>Nombre: </span>
           {name}

@@ -8,6 +8,13 @@ const getAll = async (name: string, status: Status, gender: Gender) => {
   return data;
 };
 
+const getOne = async (id: number): Promise<CharacterType> => {
+  const response = await fetch(`${baseUrl}/${id}`);
+  console.log('fetch');
+  const data: CharacterType = await response.json();
+  return data;
+};
+
 const getAllCharacters = async (url: string): Promise<Array<CharacterType>> => {
   const response = await fetch(url);
   const data: ResponseApi = await response.json();
@@ -23,4 +30,5 @@ const getAllCharacters = async (url: string): Promise<Array<CharacterType>> => {
 
 export default {
   getAll,
+  getOne,
 };
