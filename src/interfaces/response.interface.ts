@@ -1,4 +1,4 @@
-import { Character } from './character.interface';
+import { CharacterType } from './character.interface';
 
 export interface ResponseApi {
   info: {
@@ -7,5 +7,5 @@ export interface ResponseApi {
     pages: number;
     prev: string | null;
   };
-  results: Array<Character>;
+  results: Array<CharacterType>;
 }

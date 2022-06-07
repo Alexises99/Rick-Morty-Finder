@@ -6,7 +6,7 @@ import Search from './pages/Search';
 
 const App = () => {
   return (
-    <div className="App flex flex-col h-screen justify-betwee bg-primary-gray">
+    <div className="App flex flex-col min-h-screen justify-betwee bg-primary-gray">
       <Navbar />
       <div className="mb-auto p-3">
         <Routes>

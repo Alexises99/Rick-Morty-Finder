@@ -1,6 +1,6 @@
-import { Character } from '../interfaces/character.interface';
+import { CharacterType } from '../interfaces/character.interface';
 
-const Character = (character: Character) => {
+const Character = (character: CharacterType) => {
   return <div>{character.name}</div>;
 };
 

@@ -1,8 +1,8 @@
-import { url } from 'inspector';
-import React from 'react';
+import React, { useState } from 'react';
+import Character from '../components/Character';
 import InputForm from '../components/InputForm';
 import { useField } from '../hooks/useField';
-import { Character } from '../interfaces/character.interface';
+import { CharacterType } from '../interfaces/character.interface';
 import { ResponseApi } from '../interfaces/response.interface';
 
 const Search = () => {
@@ -10,19 +10,23 @@ const Search = () => {
   const { reset: resetGenre, ...genre } = useField('text');
   const { reset: resetStatus, ...status } = useField('text');
 
-  const getAllPages = async (url: string): Promise<Array<Character>> => {
+  const [characters, setCharacters] = useState<Array<CharacterType>>([]);
+
+  const getAllPages = async (url: string): Promise<Array<CharacterType>> => {
     const response = await fetch(url);
     const data: ResponseApi = await response.json();
     const characters = data.results;
-    if (data.info.next !== null) {
-      characters.push(...(await getAllPages(data.info.next)));
+    const { info } = data;
+    const { next } = info;
+    if (next !== null) {
+      characters.push(...(await getAllPages(next)));
     }
     return characters;
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    getAllPages('https://rickandmortyapi.com/api/character/?name=rick').then((data) => console.log(data));
+    getAllPages('https://rickandmortyapi.com/api/character/?name=rick').then((data) => setCharacters(data));
   };
 
   return (
@@ -44,6 +48,10 @@ const Search = () => {
             Buscar
           </button>
         </form>
+      </section>
+      <section className="">
+        {characters &&
+          characters.map((character) => <Character key={character.id} name={character.name} img={character.image} />)}
       </section>
     </div>
   );
