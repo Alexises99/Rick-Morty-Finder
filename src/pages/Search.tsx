@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import Character from '../components/Character';
 import InputForm from '../components/InputForm';
+import SelectForm from '../components/SelectForm';
 import { useField } from '../hooks/useField';
-import { CharacterType } from '../interfaces/character.interface';
+import { useSelect } from '../hooks/useSelect';
+import { CharacterType, Gender, Status } from '../interfaces/character.interface';
 import { ResponseApi } from '../interfaces/response.interface';
 
 const Search = () => {
   const { reset: resetName, ...name } = useField('text');
-  const { reset: resetGenre, ...genre } = useField('text');
-  const { reset: resetStatus, ...status } = useField('text');
+  const { ...genre } = useSelect();
+  const { ...status } = useSelect();
 
   const [characters, setCharacters] = useState<Array<CharacterType>>([]);
 
@@ -37,10 +39,9 @@ const Search = () => {
           Aqui podras encontrar toda la informacion de los personajes de la serie de Rick y Morty.
         </p>
         <form className="md:max-w-5xl mx-auto" onSubmit={handleSubmit}>
-          <InputForm labelTag="Nombre" name="name" values={name} />
-          <InputForm labelTag="Genero" name="genre" values={genre} />
-          <InputForm labelTag="Estado" name="status" values={status} />
-
+          <InputForm labelTag="Nombre" name="name" values={name} placeholder="Nombre del personaje..." />
+          <SelectForm labelTag="Genero" name="genre" values={genre} options={Object.values(Gender)} />
+          <SelectForm labelTag="Estado" name="status" values={status} options={Object.values(Status)} />
           <button
             type="submit"
             className="mt-2 w-full text-white font-bold text-lg rounded-md p-2 bg-primary-green/60 focus:border-cyan-600 focus:ring-cyan-300"

@@ -19,6 +19,15 @@ export interface CharacterType {
   created: string;
 }
 
-type Status = 'alive' | 'dead' | 'unknown';
+export enum Status {
+  Alive = 'alive',
+  Dead = 'dead',
+  Unknown = 'unkown',
+}
 
-type Gender = 'female' | 'male' | 'genderless' | 'unknown';
+export enum Gender {
+  Female = 'female',
+  Male = 'male',
+  Genderless = 'genderless',
+  Unknown = 'unkown',
+}
