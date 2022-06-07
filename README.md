@@ -18,7 +18,7 @@ Aplicacion Web, SPA desarrollada con react, en ella podras realizar busquedas de
 $ git clone https://github.com/Alexises99/Rick-Morty-Finder.git
 
 # Acceder al repositorio
-$ cd
+$ cd Rick-Morty-Finder
 
 # Instalar las dependencias
 $ npm install
