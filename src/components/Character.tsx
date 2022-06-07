@@ -1,16 +1,35 @@
 import { Link } from 'react-router-dom';
+import { CharacterType } from '../interfaces/character.interface';
 
-type CharacterProps = {
-  img: string;
-  name: string;
-};
+interface CharacterProps {
+  character: CharacterType;
+}
 
-const Character = ({ img, name }: CharacterProps) => {
+const Character = ({ character }: CharacterProps) => {
+  const { name, gender, status, type, created } = character;
   return (
     <div className="bg-white/90 border-primary-green border-2 rounded-lg my-4">
-      <Link to={`/character/:id`} className="flex flex-col p-4 text-center">
-        <img src={img} alt={name} className="rounded-lg" />
-        <h3 className="mt-3">{name}</h3>
+      <Link to={`/character/:id`} className="flex flex-col p-4">
+        <h3 className="mt-3">
+          <span>Nombre: </span>
+          {name}
+        </h3>
+        <p>
+          <span>Genero:</span>
+          {gender}
+        </p>
+        <p>
+          <span>Estado:</span>
+          {status}
+        </p>
+        <p>
+          <span>Tipo:</span>
+          {type}
+        </p>
+        <p>
+          <span>Creado:</span>
+          {created}
+        </p>
       </Link>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Character from '../components/Character';
 import InputForm from '../components/InputForm';
+import LoadingSpinner from '../components/LoadingSpinner';
 import SelectForm from '../components/SelectForm';
 import { useField } from '../hooks/useField';
 import { useSelect } from '../hooks/useSelect';
@@ -12,17 +13,25 @@ const Search = () => {
   const { reset: resetGender, ...genre } = useSelect();
   const { reset: resetStatus, ...status } = useSelect();
 
-  console.log(genre.value);
-
   const [characters, setCharacters] = useState<Array<CharacterType>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = await characterService.getAll(name.value, status.value as Status, genre.value as Gender);
-    setCharacters(data);
-    resetName();
-    resetStatus();
-    resetGender();
+    setLoading(true);
+    try {
+      const data = await characterService.getAll(name.value, status.value as Status, genre.value as Gender);
+      setCharacters(data);
+      console.log('hola');
+      resetName();
+      resetStatus();
+      resetGender();
+      setLoading(false);
+    } catch (err) {
+      setError('Error cargando personajes');
+      setLoading(false);
+    }
   };
 
   return (
@@ -32,12 +41,14 @@ const Search = () => {
         <p className="mb-3 text-center text-lg text-white md:text-2xl font-medium">
           Aqui podras encontrar toda la informacion de los personajes de la serie de Rick y Morty.
         </p>
+        {error && <p className="text-red-500">{error}</p>}
         <form className="md:max-w-5xl mx-auto" onSubmit={handleSubmit}>
           <InputForm labelTag="Nombre" name="name" values={name} placeholder="Nombre del personaje..." />
           <SelectForm labelTag="Genero" name="genre" values={genre} options={Object.values(Gender)} />
           <SelectForm labelTag="Estado" name="status" values={status} options={Object.values(Status)} />
           <button
             type="submit"
+            disabled={loading}
             className="mt-2 w-full text-white font-bold text-lg rounded-md p-2 bg-primary-green/60 focus:border-cyan-600 focus:ring-cyan-300"
           >
             Buscar
@@ -45,8 +56,11 @@ const Search = () => {
         </form>
       </section>
       <section className="">
-        {characters &&
-          characters.map((character) => <Character key={character.id} name={character.name} img={character.image} />)}
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          characters.map((character) => <Character key={character.id} character={character} />)
+        )}
       </section>
     </div>
   );

@@ -14,6 +14,7 @@ const getAllCharacters = async (url: string): Promise<Array<CharacterType>> => {
   const characters = data.results;
   const { info } = data;
   const { next } = info;
+  console.log(next);
   if (next !== null) {
     characters.push(...(await getAllCharacters(next)));
   }
