@@ -8,7 +8,6 @@ interface SelectFormProps {
 }
 
 const SelectForm = ({ name, labelTag, options, values }: SelectFormProps) => {
-  console.log(values.defaultValue);
   return (
     <div className="mb-2">
       <label htmlFor={name} className="block font-medium text-primary-green text-lg md:text-2xl">

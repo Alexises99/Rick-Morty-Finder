@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Character from '../components/Character';
 import InputForm from '../components/InputForm';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -7,17 +7,38 @@ import { useField } from '../hooks/useField';
 import { useSelect } from '../hooks/useSelect';
 import { CharacterType, Gender, Status } from '../interfaces/character.interface';
 import characterService from '../services/character';
+import { createBrowserHistory } from 'history';
+import qs from 'qs';
 
 const Search = () => {
-  const { reset: resetName, ...name } = useField('text');
-  const { reset: resetGender, ...genre } = useSelect();
-  const { reset: resetStatus, ...status } = useSelect();
+  const { reset: resetName, setValue: setName, ...name } = useField('text');
+  const { reset: resetGender, setValue: setGender, ...genre } = useSelect();
+  const { reset: resetStatus, setValue: setStatus, ...status } = useSelect();
+  const history = createBrowserHistory();
 
   const [characters, setCharacters] = useState<Array<CharacterType>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  console.log(status.defaultValue);
+  useEffect(() => {
+    const params = history.location.search.substring(1);
+    const filterParams = qs.parse(params);
+    if (filterParams.name) {
+      setName(filterParams.name.toString());
+    }
+    if (filterParams.gender) {
+      console.log(filterParams.gender.toString());
+      setGender(filterParams.gender.toString());
+    }
+    if (filterParams.status) {
+      setStatus(filterParams.status.toString());
+    }
+    console.log(params);
+  }, []);
+
+  useEffect(() => {
+    history.push(`?name=${name.value}&status=${status.defaultValue}&gender=${genre.defaultValue}`);
+  }, [name.value, genre.defaultValue, status.defaultValue]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,7 +50,6 @@ const Search = () => {
         genre.defaultValue as Gender,
       );
       setCharacters(data);
-      resetName();
       setLoading(false);
     } catch (err) {
       setError('Error cargando personajes');

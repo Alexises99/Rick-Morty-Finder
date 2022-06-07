@@ -19,6 +19,7 @@ export const useSelect = () => {
   return {
     defaultValue,
     onChange,
+    setValue,
     reset,
   };
 };
