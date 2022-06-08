@@ -12,49 +12,71 @@ import qs from 'qs';
 
 const Search = () => {
   const { reset: resetName, setValue: setName, ...name } = useField('text');
-  const { reset: resetGender, setValue: setGender, ...genre } = useSelect();
+  const { reset: resetGender, setValue: setGender, ...gender } = useSelect();
   const { reset: resetStatus, setValue: setStatus, ...status } = useSelect();
+
   const history = createBrowserHistory();
 
   const [characters, setCharacters] = useState<Array<CharacterType>>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  const fetchData = async (name: string, status: Status, gender: Gender): Promise<Array<CharacterType>> => {
+    return await characterService.getAll(name, status, gender);
+  };
+
+  console.log(gender.value);
+
   useEffect(() => {
     const params = history.location.search.substring(1);
     const filterParams = qs.parse(params);
+    let search = false;
     if (filterParams.name) {
       setName(filterParams.name.toString());
+      search = true;
     }
     if (filterParams.gender) {
-      console.log(filterParams.gender.toString());
       setGender(filterParams.gender.toString());
+      search = true;
     }
     if (filterParams.status) {
       setStatus(filterParams.status.toString());
+      search = true;
     }
-    console.log(params);
+
+    if (search) {
+      fetchData(filterParams.name as string, filterParams.status as Status, filterParams.gender as Gender)
+        .then((data) => {
+          setCharacters(data);
+          setLoading(false);
+          setError('');
+        })
+        .catch(() => {
+          setError('Personajes no encontrados');
+          setLoading(false);
+          setCharacters([]);
+        });
+    }
   }, []);
 
   useEffect(() => {
-    history.push(`?name=${name.value}&status=${status.defaultValue}&gender=${genre.defaultValue}`);
-  }, [name.value, genre.defaultValue, status.defaultValue]);
+    history.push(`?name=${name.value}&gender=${gender.value}&status=${status.value}`);
+  }, [name.value, gender.value, status.value]);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    try {
-      const data = await characterService.getAll(
-        name.value,
-        status.defaultValue as Status,
-        genre.defaultValue as Gender,
-      );
-      setCharacters(data);
-      setLoading(false);
-    } catch (err) {
-      setError('Error cargando personajes');
-      setLoading(false);
-    }
+    fetchData(name.value, status.value as Status, gender.value as Gender)
+      .then((data) => {
+        setCharacters(data);
+        setLoading(false);
+        setError('');
+      })
+      .catch(() => {
+        setError('Personajes no encontrados');
+        setLoading(false);
+        setCharacters([]);
+      });
   };
 
   return (
@@ -64,11 +86,26 @@ const Search = () => {
         <p className="mb-3 text-center text-lg text-white md:text-2xl font-medium">
           Aqui podras encontrar toda la informacion de los personajes de la serie de Rick y Morty.
         </p>
-        {error && <p className="text-red-500">{error}</p>}
+
         <form className="md:max-w-5xl mx-auto" onSubmit={handleSubmit}>
           <InputForm labelTag="Nombre" name="name" values={name} placeholder="Nombre del personaje..." />
-          <SelectForm labelTag="Genero" name="genre" values={genre} options={Object.values(Gender)} />
-          <SelectForm labelTag="Estado" name="status" values={status} options={Object.values(Status)} />
+          <SelectForm
+            labelTag="Genero"
+            name="genre"
+            value={gender.value}
+            onChange={gender.onChange}
+            options={Object.values(Gender)}
+            reset={resetGender}
+          />
+          <SelectForm
+            labelTag="Estado"
+            name="status"
+            value={status.value}
+            onChange={status.onChange}
+            options={Object.values(Status)}
+            reset={resetStatus}
+          />
+
           <button
             type="submit"
             disabled={loading}
@@ -78,11 +115,17 @@ const Search = () => {
           </button>
         </form>
       </section>
-      <section className="">
+      {error && <p className="mt-4 text-red-500 text-center uppercase text-xl font-bold">{error}</p>}
+
+      <section className="flex justify-center mt-4">
         {loading ? (
           <LoadingSpinner />
         ) : (
-          characters.map((character) => <Character key={character.id} character={character} />)
+          <div className="container grid md:grid-cols-2 gap-5 lg:grid-cols-3 xl:grid-cols-4">
+            {characters.map((character) => (
+              <Character key={character.id} character={character} />
+            ))}
+          </div>
         )}
       </section>
     </div>

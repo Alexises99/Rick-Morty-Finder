@@ -6,7 +6,7 @@ export interface UseSelectType {
 }
 
 export const useSelect = () => {
-  const [defaultValue, setValue] = useState<string>('');
+  const [value, setValue] = useState<string>('');
 
   const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(event.target.value);
@@ -17,7 +17,7 @@ export const useSelect = () => {
   };
 
   return {
-    defaultValue,
+    value,
     onChange,
     setValue,
     reset,

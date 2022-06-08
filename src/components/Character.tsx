@@ -8,26 +8,26 @@ interface CharacterProps {
 const Character = ({ character }: CharacterProps) => {
   const { name, gender, status, type, created, id } = character;
   return (
-    <div className="bg-white/90 border-primary-green border-2 rounded-lg my-4">
+    <div className="bg-white/90 border-primary-green border-2 rounded-lg">
       <Link to={`/character/${id}`} className="flex flex-col p-4">
         <h3 className="mt-3">
-          <span>Nombre: </span>
+          <span className="font-bold mr-1">Nombre: </span>
           {name}
         </h3>
         <p>
-          <span>Genero:</span>
+          <span className="font-bold mr-1">Genero:</span>
           {gender}
         </p>
         <p>
-          <span>Estado:</span>
+          <span className="font-bold mr-1">Estado:</span>
           {status}
         </p>
         <p>
-          <span>Tipo:</span>
-          {type}
+          <span className="font-bold mr-1">Tipo:</span>
+          {type ? type : 'No informado'}
         </p>
         <p>
-          <span>Creado:</span>
+          <span className="font-bold mr-1">Creado:</span>
           {created}
         </p>
       </Link>
