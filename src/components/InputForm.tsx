@@ -1,4 +1,5 @@
 import { UseFieldType } from '../hooks/useField';
+import LabelForInput from './LabelForInput';
 
 interface InputFormProps {
   name: string;
@@ -10,9 +11,7 @@ interface InputFormProps {
 const InputForm = ({ name, labelTag, values, placeholder }: InputFormProps) => {
   return (
     <div className="mb-2">
-      <label htmlFor={name} className="block font-medium text-primary-green text-lg md:text-2xl">
-        {labelTag}:{' '}
-      </label>
+      <LabelForInput labelTag={labelTag} name={name} />
       <input
         name={name}
         placeholder={placeholder}

@@ -9,6 +9,8 @@ import { CharacterType, Gender, Status } from '../interfaces/character.interface
 import characterService from '../services/character';
 import { createBrowserHistory } from 'history';
 import qs from 'qs';
+import NotifyError from '../components/NotifyError';
+import { checkParameters } from '../utils/checkParams';
 
 const Search = () => {
   const { reset: resetName, setValue: setName, ...name } = useField('text');
@@ -21,38 +23,35 @@ const Search = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  const fetchData = async (name: string, status: Status, gender: Gender): Promise<Array<CharacterType>> => {
-    return await characterService.getAll(name, status, gender);
-  };
-
-  console.log(gender.value);
+  const errorMessage = 'Personajes no encontrados';
 
   useEffect(() => {
     const params = history.location.search.substring(1);
     const filterParams = qs.parse(params);
+    const paramsFiltered = checkParameters(filterParams);
+    const { name, gender, status } = paramsFiltered;
     let search = false;
-    if (filterParams.name) {
-      setName(filterParams.name.toString());
+    if (name) {
+      setName(name);
       search = true;
     }
-    if (filterParams.gender) {
-      setGender(filterParams.gender.toString());
+    if (gender) {
+      setGender(gender);
       search = true;
     }
-    if (filterParams.status) {
-      setStatus(filterParams.status.toString());
+    if (status) {
+      setStatus(status);
       search = true;
     }
-
     if (search) {
-      fetchData(filterParams.name as string, filterParams.status as Status, filterParams.gender as Gender)
+      fetchData(name, status, gender)
         .then((data) => {
           setCharacters(data);
           setLoading(false);
           setError('');
         })
         .catch(() => {
-          setError('Personajes no encontrados');
+          setError(errorMessage);
           setLoading(false);
           setCharacters([]);
         });
@@ -62,6 +61,10 @@ const Search = () => {
   useEffect(() => {
     history.push(`?name=${name.value}&gender=${gender.value}&status=${status.value}`);
   }, [name.value, gender.value, status.value]);
+
+  const fetchData = async (name: string, status: string, gender: string): Promise<Array<CharacterType>> => {
+    return await characterService.getAll(name, status, gender);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,7 +76,7 @@ const Search = () => {
         setError('');
       })
       .catch(() => {
-        setError('Personajes no encontrados');
+        setError(errorMessage);
         setLoading(false);
         setCharacters([]);
       });
@@ -88,20 +91,20 @@ const Search = () => {
         </p>
 
         <form className="md:max-w-5xl mx-auto" onSubmit={handleSubmit}>
-          <InputForm labelTag="Nombre" name="name" values={name} placeholder="Nombre del personaje..." />
+          <InputForm name="name" labelTag="Nombre:" values={name} placeholder="Nombre del personaje..." />
+
           <SelectForm
             labelTag="Genero"
-            name="genre"
-            value={gender.value}
-            onChange={gender.onChange}
+            name="gender"
+            values={gender}
             options={Object.values(Gender)}
             reset={resetGender}
           />
+
           <SelectForm
             labelTag="Estado"
             name="status"
-            value={status.value}
-            onChange={status.onChange}
+            values={status}
             options={Object.values(Status)}
             reset={resetStatus}
           />
@@ -115,7 +118,7 @@ const Search = () => {
           </button>
         </form>
       </section>
-      {error && <p className="mt-4 text-red-500 text-center uppercase text-xl font-bold">{error}</p>}
+      {error && <NotifyError text={error} />}
 
       <section className="flex justify-center mt-4">
         {loading ? (

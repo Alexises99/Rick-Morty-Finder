@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import NotifyError from '../components/NotifyError';
 import { CharacterType } from '../interfaces/character.interface';
 import characterService from '../services/character';
 
 const Character = () => {
   const [character, setCharacter] = useState<CharacterType>();
+  const [error, setError] = useState<string>('');
+
+  const errorMessage = 'Personaje no encontrado';
 
   const { characterId } = useParams();
 
@@ -15,13 +19,10 @@ const Character = () => {
   };
 
   useEffect(() => {
-    console.log('hello');
     fetchCharacter()
       .then((data) => setCharacter(data))
-      .catch((err) => console.log(err));
+      .catch(() => setError('a'));
   }, []);
-
-  console.log(character);
 
   return (
     <div className="mt-3">

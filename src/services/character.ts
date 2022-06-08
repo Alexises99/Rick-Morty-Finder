@@ -3,7 +3,7 @@ import { ResponseApi } from '../interfaces/response.interface';
 
 const baseUrl = 'https://rickandmortyapi.com/api/character';
 
-const getAll = async (name: string, status: Status, gender: Gender) => {
+const getAll = async (name: string, status: string, gender: string) => {
   const data = await getAllCharacters(`${baseUrl}/?name=${name}&status=${status}&gender=${gender}`);
   return data;
 };
