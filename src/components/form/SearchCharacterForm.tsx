@@ -25,7 +25,6 @@ const SearchCharacterForm = ({ onSubmit }: SearchCharacterFormProps) => {
     const filterParams = qs.parse(params);
     const paramsFiltered = checkParameters(filterParams);
     const { name, gender, status } = paramsFiltered;
-    console.log(status);
     let search = false;
     if (name) {
       setName(name);
@@ -54,7 +53,7 @@ const SearchCharacterForm = ({ onSubmit }: SearchCharacterFormProps) => {
   };
 
   return (
-    <form className="md:max-w-5xl mx-auto" onSubmit={handleSubmit}>
+    <form className="md:max-w-5xl mx-auto" data-testid="form" onSubmit={handleSubmit}>
       <InputForm name="name" labelTag="Nombre" values={name} placeholder="Nombre del personaje..." />
 
       <SelectForm
