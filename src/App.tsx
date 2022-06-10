@@ -3,6 +3,7 @@ import Footer from './components/Footer';
 import Navbar from './components/nav/Navbar';
 import Character from './pages/Character';
 import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 import Search from './pages/Search';
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
           <Route path="/character">
             <Route path=":characterId" element={<Character />} />
           </Route>
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 

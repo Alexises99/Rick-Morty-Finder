@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import Heading2 from '../components/Heading2';
 import NotifyError from '../components/NotifyError';
 import { CharacterType } from '../interfaces/character.interface';
 import characterService from '../services/character';
@@ -12,7 +13,7 @@ const Character = () => {
 
   const { characterId } = useParams();
 
-  const fetchCharacter = async () => {
+  const fetchCharacter = async (): Promise<CharacterType | void> => {
     if (characterId) {
       return await characterService.getOne(+characterId);
     }
@@ -20,16 +21,21 @@ const Character = () => {
 
   useEffect(() => {
     fetchCharacter()
-      .then((data) => setCharacter(data))
-      .catch(() => setError('a'));
+      .then((data) => {
+        if (data) {
+          setCharacter(data);
+        }
+      })
+      .catch(() => setError(errorMessage));
   }, []);
 
   return (
     <div className="mt-3">
+      {error && <NotifyError text={error} />}
       {character && (
-        <div className="flex items-center flex-col">
-          <img src={character.image} alt={character.name} />
-          <h2 className="text-primary-green text-3xl font-bold mt-3">{character.name}</h2>
+        <div>
+          <img src={character.image} alt={character.name} className="mx-auto mb-2" />
+          <Heading2 text={character.name} />
         </div>
       )}
     </div>

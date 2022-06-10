@@ -1,4 +1,4 @@
-import { UseSelectType } from '../hooks/useSelect';
+import { UseSelectType } from '../../hooks/useSelect';
 import LabelForInput from './LabelForInput';
 
 interface SelectFormProps {
@@ -20,7 +20,8 @@ const SelectForm = ({ name, labelTag, options, values, reset }: SelectFormProps)
       </div>
 
       <select
-        name={name}
+        data-testid="select-form"
+        id={name}
         {...values}
         className="w-full py-2 mt-2 bg-white border rounded-md focus:border-primary-green/80 focus:ring-primary-green/50 focus:outline-none focus:ring focus:ring-opacity-40 md:text-lg lg:text-xl"
       >

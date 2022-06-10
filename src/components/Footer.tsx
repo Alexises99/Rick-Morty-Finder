@@ -4,9 +4,8 @@ const Footer = () => {
   return (
     <footer className="bg-black/90 text-white text-center p-3">
       <a target="_blank" href="https://icons8.com/icon/piYBLqygGNnu/morty-smith" rel="noreferrer">
-        All icons by
+        All icons by{' '}
       </a>{' '}
-      icon by{' '}
       <a target="_blank" href="https://icons8.com" rel="noreferrer">
         Icons8
       </a>
