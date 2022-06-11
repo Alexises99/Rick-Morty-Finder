@@ -20,7 +20,7 @@ const Search = () => {
 
   const handleSubmit = async (name: string, status: string, gender: string) => {
     setLoading(true);
-
+    setCharacters([]);
     fetchData(name, status, gender)
       .then((data) => {
         setCharacters(data);

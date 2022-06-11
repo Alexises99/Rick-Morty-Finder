@@ -1,4 +1,3 @@
-import qs from 'qs';
 import { useField } from '../../hooks/useField';
 import { useSelect } from '../../hooks/useSelect';
 import { Gender, Status } from '../../interfaces/character.interface';
@@ -6,49 +5,42 @@ import { checkParameters } from '../../utils/checkParams';
 import InputForm from './InputForm';
 import SelectForm from './SelectForm';
 import SubmitButton from './SubmitButton';
-import { createBrowserHistory } from 'history';
 import { useEffect } from 'react';
 import { capitalizeFirstLetter } from '../../utils/capitalize';
+import { useSearchParams } from 'react-router-dom';
 
 interface SearchCharacterFormProps {
   onSubmit: (name: string, status: string, gender: string) => void;
 }
 
 const SearchCharacterForm = ({ onSubmit }: SearchCharacterFormProps) => {
-  const history = createBrowserHistory();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { reset: resetName, setValue: setName, ...name } = useField('text');
   const { reset: resetGender, setValue: setGender, ...gender } = useSelect();
   const { reset: resetStatus, setValue: setStatus, ...status } = useSelect();
 
   useEffect(() => {
-    const params = history.location.search.substring(1);
-    const filterParams = qs.parse(params);
-    const paramsFiltered = checkParameters(filterParams);
+    const nameParam = searchParams.get('name');
+    const genderParam = searchParams.get('gender');
+    const statusParam = searchParams.get('status');
+    const paramsFiltered = checkParameters({ name: nameParam, gender: genderParam, status: statusParam });
     const { name, gender, status } = paramsFiltered;
-    let search = false;
-    if (name) {
-      setName(name);
-      search = true;
-    }
-    if (gender) {
-      setGender(gender);
-      search = true;
-    }
-    if (status) {
-      setStatus(status);
-      search = true;
-    }
-    if (search) {
-      onSubmit(name, status, gender);
-    }
-  }, []);
 
-  useEffect(() => {
-    history.push(`?name=${name.value}&gender=${gender.value}&status=${status.value}`);
-  }, [name.value, gender.value, status.value]);
+    setName(name);
+    setGender(gender);
+    setStatus(status);
+
+    onSubmit(name, status, gender);
+  }, [searchParams]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setSearchParams({
+      name: name.value,
+      gender: gender.value,
+      status: status.value,
+    });
     onSubmit(name.value, status.value, gender.value);
   };
 

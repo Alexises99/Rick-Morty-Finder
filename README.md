@@ -1,6 +1,6 @@
 # Rick & Morty Finder
 
-Aplicacion Web, SPA desarrollada con react, en ella podras realizar busquedas de los personajes de la serie a traves de varios campos.
+Aplicacion Web, SPA desarrollada con react, en ella podras realizar busquedas de tus personajes favoritos de la serie a traves del nombre, estado o genero.
 
 ## Tecnologias empleadas
 
@@ -10,8 +10,9 @@ Aplicacion Web, SPA desarrollada con react, en ella podras realizar busquedas de
 - Prettier
 - Tailwind
 - Typescript
+- Jest
 
-## Como usar
+## Como ejecutar
 
 ```
 # Clonar el repositorio
@@ -25,10 +26,11 @@ $ npm install
 
 # Ejecutar la app
 $ npm start
+
+# Ejecutar test
+$ npm test
 ```
 
 ## To do
 
-- Implementar la busqueda de personajes
-- Rutas correctamente
-- Desarrollo de tests
+- Desarrollo de Tests E2E
