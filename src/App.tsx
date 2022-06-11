@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Footer from './components/Footer';
 import Navbar from './components/nav/Navbar';
-import Character from './pages/Character';
+import CharacterInfo from './pages/CharacterInfo';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Search from './pages/Search';
@@ -15,7 +15,7 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/character">
-            <Route path=":characterId" element={<Character />} />
+            <Route path=":characterId" element={<CharacterInfo />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>

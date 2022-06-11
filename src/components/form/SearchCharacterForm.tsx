@@ -16,7 +16,7 @@ interface SearchCharacterFormProps {
 const SearchCharacterForm = ({ onSubmit }: SearchCharacterFormProps) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const { reset: resetName, setValue: setName, ...name } = useField('text');
+  const { setValue: setName, ...name } = useField('text');
   const { reset: resetGender, setValue: setGender, ...gender } = useSelect();
   const { reset: resetStatus, setValue: setStatus, ...status } = useSelect();
 
@@ -24,6 +24,11 @@ const SearchCharacterForm = ({ onSubmit }: SearchCharacterFormProps) => {
     const nameParam = searchParams.get('name');
     const genderParam = searchParams.get('gender');
     const statusParam = searchParams.get('status');
+
+    if (nameParam === null && genderParam === null && statusParam === null) {
+      return;
+    }
+
     const paramsFiltered = checkParameters({ name: nameParam, gender: genderParam, status: statusParam });
     const { name, gender, status } = paramsFiltered;
 

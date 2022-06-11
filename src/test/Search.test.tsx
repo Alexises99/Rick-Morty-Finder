@@ -8,7 +8,11 @@ import { Gender, Status } from '../interfaces/character.interface';
 
 describe('Search page', () => {
   test('renders title', () => {
-    const component = render(<Search />);
+    const component = render(
+      <MemoryRouter>
+        <Search />
+      </MemoryRouter>,
+    );
     const header = component.getByText('Rick & Morty Finder');
 
     expect(header).toBeDefined();

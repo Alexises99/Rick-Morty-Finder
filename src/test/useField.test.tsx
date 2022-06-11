@@ -16,13 +16,4 @@ describe('useField', () => {
     });
     expect(result.current.value).toBe('holaa');
   });
-
-  test('Reset', () => {
-    const { result } = renderHook(() => useField('text'));
-    act(() => {
-      result.current.onChange({ target: { value: 'holaa' } } as ChangeEvent<HTMLInputElement>);
-      result.current.reset();
-    });
-    expect(result.current.value).toBe('');
-  });
 });

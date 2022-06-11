@@ -8,7 +8,7 @@ interface CharacterProps {
 const Character = ({ character }: CharacterProps) => {
   const { name, gender, status, type, created, id } = character;
   return (
-    <div className="bg-white/90 border-primary-green border-2 rounded-lg">
+    <div className="bg-white/90 border-primary-green border-4 rounded-lg">
       <Link to={`/character/${id}`} className="flex flex-col p-4">
         <h3 className="mt-3">
           <span className="font-bold mr-1">Nombre: </span>

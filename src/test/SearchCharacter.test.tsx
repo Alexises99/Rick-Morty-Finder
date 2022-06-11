@@ -1,12 +1,17 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import SearchCharacterForm from '../components/form/SearchCharacterForm';
+import { MemoryRouter } from 'react-router';
 import '@testing-library/jest-dom/extend-expect';
 
-describe('', () => {
+describe.only('', () => {
   test('renders title', () => {
     const onSubmit = jest.fn();
-    const component = render(<SearchCharacterForm onSubmit={onSubmit} />);
+    const component = render(
+      <MemoryRouter>
+        <SearchCharacterForm onSubmit={onSubmit} />
+      </MemoryRouter>,
+    );
 
     const name = component.getByText('Nombre:');
     const status = component.getByText('Estado:');
@@ -21,17 +26,27 @@ describe('', () => {
 
   test('submit bottom works fine', () => {
     const onSubmit = jest.fn();
-    const component = render(<SearchCharacterForm onSubmit={onSubmit} />);
+    const component = render(
+      <MemoryRouter>
+        <SearchCharacterForm onSubmit={onSubmit} />
+      </MemoryRouter>,
+    );
 
     const button = component.getByText('Buscar');
+    act(() => {
+      button.dispatchEvent(new MouseEvent('click'));
+    });
 
-    fireEvent.click(button);
-    expect(onSubmit.mock.calls).toHaveLength(1);
+    expect(onSubmit).toHaveBeenCalled();
   });
 
   test('Can edit the form', async () => {
     const onSubmit = jest.fn();
-    const { getByLabelText, getByTestId } = render(<SearchCharacterForm onSubmit={onSubmit} />);
+    const { getByLabelText, getByTestId } = render(
+      <MemoryRouter>
+        <SearchCharacterForm onSubmit={onSubmit} />
+      </MemoryRouter>,
+    );
 
     const name = getByLabelText('Nombre:');
     const status = getByLabelText('Estado:');
